@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>History quick view</title>
         <link rel="stylesheet" href="/style.css">
+        <script src="/i18n.js" defer></script>
         <script src="/main.js" defer></script>
         <template id="template_rangesearch">
             <section class="range" data-starttime="">
@@ -66,6 +67,7 @@
                     data-type="remove"
                     data-for="item"
                     title="remove"
+                    data-i18n-title="removeItemTitle"
                     name="remove"
                     class="shell"
                     type="button"
@@ -95,6 +97,7 @@
                         href="https://chromewebstore.google.com/detail/history-quick-view/ednfjcijimijfccmlfbeejidmbekdmic"
                         target="_blank"
                         rel="noreferrer noopener"
+                        data-i18n="extName"
                     >
                         History Quick View
                     </a>
@@ -125,6 +128,7 @@
                 <button
                     name="history"
                     title="Go to history"
+                    data-i18n-title="ttGoHistory"
                     type="button"
                     class="shell"
                 >
@@ -146,6 +150,7 @@
                 <button
                     name="clear"
                     title="Clear browsing history"
+                    data-i18n-title="ttClearData"
                     type="button"
                     class="shell"
                 >
@@ -172,6 +177,7 @@
                     class="button shell"
                     name="about"
                     title="About"
+                    data-i18n-title="ttAbout"
                 >
                     <svg
                         class="icon icon-circle"
@@ -193,6 +199,7 @@
                     class="shell"
                     type="button"
                     title="Keyboard shortcuts"
+                    data-i18n-title="ttKeyboard"
                 >
                     <svg
                         class="icon icon-keyboard"
@@ -218,6 +225,7 @@
                 <button
                     name="more"
                     title="More"
+                    data-i18n-title="ttMore"
                     type="button"
                     class="shell"
                 >
@@ -240,6 +248,7 @@
                 <button
                     name="close"
                     title="Close"
+                    data-i18n-title="ttClose"
                     type="button"
                     class="shell"
                 >
@@ -265,6 +274,7 @@
                     role="search"
                     name="search"
                     aria-label="on browsing history"
+                    data-i18n-arialabel="searchAria"
                 >
                     <div class="container text">
                         <svg
@@ -285,6 +295,7 @@
                             type="text"
                             value=""
                             placeholder="Search history"
+                            data-i18n-placeholder="searchPlaceholder"
                         />
                         <button
                             name="clear-text"
@@ -333,17 +344,17 @@
                     </div>
                 </form>
                 <div class="search-container">
-                    <p id="m_empty" class="empty" data-css-hidden>
+                    <p id="m_empty" class="empty" data-css-hidden data-i18n="noHistory">
                         No History
                     </p>
                     <section id="m_error" class="error" data-css-hidden>
-                        <h3>Sorry, an ERROR occurs</h3>
+                        <h3 data-i18n="errorTitle">Sorry, an ERROR occurs</h3>
                         <span name="msg"></span>
-                        <span>please report to <a
+                        <span><span data-i18n="errorReportPre">please report to </span><a
                             href="https://github.com/AxelArielSaravia/history-quick-view/issues"
                             target="_blank"
                             rel="noreferrer noopener"
-                        >github</a></span>
+                        >github</a><span data-i18n="errorReportPost"></span></span>
                     </section>
                     <div id="m_container" class="container">
                     </div>
@@ -351,7 +362,7 @@
             </section>
             <section name="more" id="section_more" class="page">
                 <header>
-                    <h2>Configuration</h2>
+                    <h2 data-i18n="configTitle">Configuration</h2>
                     <button class="shell" data-action="close" type="button">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             width="24" height="24"
@@ -371,27 +382,32 @@
                 </header>
                 <form name="more">
                     <div class="field">
-                        <p>Theme:</p>
+                        <p data-i18n="themeLabel">Theme:</p>
                         <select name="theme">
-                            <option value="d">Dark</option>
-                            <option value="l">Light</option>
+                            <option value="d" data-i18n="themeDark">Dark</option>
+                            <option value="l" data-i18n="themeLight">Light</option>
                         </select>
                     </div>
                     <div class="field">
-                        <p>Show Search bar:</p>
+                        <p data-i18n="showSearchLabel">Show Search bar:</p>
                         <input name="showsearch" type="checkbox" checkd>
                     </div>
                     <div class="field">
                         <p
                             title="Set if the url opens in the curren or in a new tab"
+                            data-i18n="openLinksLabel"
+                            data-i18n-title="openLinksTitle"
                         >Open links at:</p>
                         <select name="open">
-                            <option value="c">Current Tab</option>
-                            <option value="n">New Tab</option>
+                            <option value="c" data-i18n="openCurrent">Current Tab</option>
+                            <option value="n" data-i18n="openNew">New Tab</option>
                         </select>
                     </div>
                     <div class="field">
-                        <p title="When a new tab is opens, go to it (focus it) or stay in your current tab">
+                        <p title="When a new tab is opens, go to it (focus it) or stay in your current tab"
+                            data-i18n="focusLabel"
+                            data-i18n-title="focusTitle"
+                        >
                             Focus opened tabs:
                         </p>
                         <input name="focus" type="checkbox">
@@ -400,7 +416,7 @@
                 <footer class="socials">
                     <p class="version">v0.5.0</p>
                     <div>
-                        <p>created by <strong>Axel Ariel Saravia</strong></p>
+                        <p><span data-i18n="createdBy">created by</span> <strong>Axel Ariel Saravia</strong></p>
                         <a
                             href="https://github.com/AxelArielSaravia/history-quick-view"
                             target="_blank"
@@ -425,7 +441,7 @@
             </section>
             <section name="keyboard" id="section_keyboard" class="page">
                 <header>
-                    <h2>Commands</h2>
+                    <h2 data-i18n="commandsTitle">Commands</h2>
                     <button class="shell" data-action="close" type="button">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             width="24" height="24"
@@ -445,51 +461,51 @@
                 </header>
                 <article>
                     <h3><kbd>Tab</kbd></h3>
-                    <p>normal navigation.</p>
+                    <p data-i18n="kbdTab">normal navigation.</p>
                 </article>
                 <hr>
                 <article>
                     <h3><kbd>s</kbd></h3>
-                    <p>focus search input.</p>
+                    <p data-i18n="kbdS">focus search input.</p>
                 </article>
                 <article>
                     <h3><kbd>Ctrl</kbd> + <kbd>q</kbd></h3>
-                    <p>on search input, removes the search input text.</p>
+                    <p data-i18n="kbdCtrlQSearch">on search input, removes the search input text.</p>
                 </article>
                 <hr>
                 <article>
                     <h3><kbd>r</kbd></h3>
-                    <p>removes a link</p>
+                    <p data-i18n="kbdR">removes a link</p>
                 </article>
                 <article>
                     <h3><kbd>Shift</kbd> + <kbd>r</kbd></h3>
-                    <p>on link, remove the complete day range.</p>
+                    <p data-i18n="kbdShiftR">on link, remove the complete day range.</p>
                 </article>
                 <article>
                     <h3><kbd>Ctrl</kbd> + <kbd>Enter</kbd></h3>
-                    <p>on item, opens the item in a contrary way that the open behavior.</p>
+                    <p data-i18n="kbdOpenContrary">on item, opens the item in a contrary way that the open behavior.</p>
                 </article>
                 <article>
                     <h3><kbd>Ctrl</kbd> + <kbd>mouse click</kbd></h3>
-                    <p>on item, opens the item in a contrary way that the open behavior.</p>
+                    <p data-i18n="kbdOpenContrary">on item, opens the item in a contrary way that the open behavior.</p>
                 </article>
                 <article>
                     <h3><kbd>Shift</kbd> + <kbd>Enter</kbd></h3>
-                    <p>on item, opens the item in a new windows.</p>
+                    <p data-i18n="kbdOpenNewWindow">on item, opens the item in a new windows.</p>
                 </article>
                 <article>
                     <h3><kbd>Shift</kbd> + <kbd>mouse click</kbd></h3>
-                    <p>on item, opens the item in a new windows.</p>
+                    <p data-i18n="kbdOpenNewWindow">on item, opens the item in a new windows.</p>
                 </article>
                 <hr>
                 <article>
                     <h3><kbd>Ctrl</kbd> + <kbd>q</kbd></h3>
-                    <p>close any kind of section.</p>
+                    <p data-i18n="kbdCtrlQClose">close any kind of section.</p>
                 </article>
                 <article>
                     <h3><kbd>m</kbd></h3>
                     <p>
-                        open or close the "more section <svg
+                        <span data-i18n="kbdM">open or close the "more" section</span> <svg
                             class="icon icon-ellipsis"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
@@ -502,13 +518,13 @@
                             <circle cx="12" cy="12" r="1"/>
                             <circle cx="19" cy="12" r="1"/>
                             <circle cx="5" cy="12" r="1"/>
-                        </svg>".
+                        </svg>
                     </p>
                 </article>
                 <article>
                     <h3><kbd>k</kbd></h3>
                     <p>
-                        open or close the "keyboard section <svg
+                        <span data-i18n="kbdK">open or close the "keyboard" section</span> <svg
                             xmlns="http://www.w3.org/2000/svg"
                             class="icon icon-keyboard"
                             viewBox="0 0 24 24"
@@ -527,7 +543,7 @@
                             <path d="M7 16h10"/>
                             <path d="M8 12h.01"/>
                             <rect width="20" height="16" x="2" y="4" rx="2"/>
-                        </svg>".
+                        </svg>
                     </p>
                 </article>
             </section>
