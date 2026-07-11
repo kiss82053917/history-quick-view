@@ -710,7 +710,7 @@ const HRange = {
         const DOMDelete = DOMRange?.firstElementChild?.lastElementChild;
         DOMDelete?.setAttribute(
             "title",
-            `Remove ${dateFormat} browsing history`
+            chrome.i18n.getMessage("removeRangeTitle", [dateFormat])
         );
         return DOMRange;
     },
@@ -1426,7 +1426,7 @@ async function searchToDOM(historyItems) {
 
     if (TimeRange.length == 0) {
         if (-1 === TimeRange.add(timeRangeEnd, timeRangeStart)) {
-            HError.set("Creating Time Range fails");
+            HError.set(chrome.i18n.getMessage("errCreateRange"));
         }
         if (searchMode) {
             DOMRange = HRange.createSearch(timeRangeStart);
@@ -1448,7 +1448,7 @@ async function searchToDOM(historyItems) {
         DOMRange = HSearchCointainer.CONTAINER.lastElementChild;
     }
     if (DOMRange === null) {
-        HError.set("DOMRange is null");
+        HError.set(chrome.i18n.getMessage("errDomRange"));
     }
 
     TimeRange.addElements(itemsCreated);
@@ -1467,7 +1467,7 @@ async function searchToDOM(historyItems) {
         console.info("New range");
         let t = TimeRange.addFrom(lastVisitTime);
         if (t === -1) {
-            HError.set("Creating Time Range fails");
+            HError.set(chrome.i18n.getMessage("errCreateRange"));
         }
         SearchQuery.endTime = t
         lastItemId = "";
