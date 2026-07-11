@@ -5,9 +5,10 @@
  * "今天" 翻译为 ""（调用方按空串走"今天"语义）。
  */
 
+//注意：DateParser.checkMonth 是首字母大写严格匹配（"Jul"≠"jul"）
 const CN_MONTH_SHORT = [
-    "jan", "feb", "mar", "apr", "may", "jun",
-    "jul", "aug", "sep", "oct", "nov", "dec",
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 ];
 const CN_WDAY_SHORT = {
     "一": "mo", "二": "tu", "三": "we", "四": "th",
