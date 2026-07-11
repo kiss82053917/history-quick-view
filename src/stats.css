@@ -141,3 +141,12 @@ body {
     border: 1px solid var(--color-border); border-radius: 6px;
     padding: 5px 9px; font-size: 1.2rem; white-space: nowrap;
 }
+
+/* PHASE4: 导出按钮 */
+.stats-header { flex-wrap: wrap; gap: 8px; }
+.export { display: flex; gap: 8px; }
+.export button {
+    border: 1px solid var(--color-border); background: transparent; color: var(--color);
+    font: inherit; font-size: 1.3rem; padding: 6px 12px; border-radius: 8px; cursor: pointer;
+}
+.export button:hover { background: var(--color-hover); }

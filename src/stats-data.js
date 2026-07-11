@@ -94,7 +94,7 @@ async function fetchVisits(days) {
                 const vs = await chrome.history.getVisits({url: it.url});
                 for (const x of vs) {
                     if (x.visitTime >= startTime && x.visitTime <= now) {
-                        visits.push({url: it.url, host, time: x.visitTime});
+                        visits.push({url: it.url, host, time: x.visitTime, title: it.title ?? ""});
                     }
                 }
             } catch (e) {

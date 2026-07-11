@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="/stats.css">
         <script src="/i18n.js" defer></script>
         <script src="/stats-data.js" defer></script>
+        <script src="/export.js" defer></script>
         <script src="/stats.js" defer></script>
     </head>
     <body>
@@ -17,6 +18,10 @@
                     <button type="button" data-range="7" data-i18n="statsRange7">7 days</button>
                     <button type="button" data-range="30" data-i18n="statsRange30">30 days</button>
                     <button type="button" data-range="90" data-i18n="statsRange90">90 days</button>
+                </div>
+                <div class="export">
+                    <button type="button" id="exp_csv" data-i18n="exportCSV">Export CSV</button>
+                    <button type="button" id="exp_json" data-i18n="exportJSON">Export JSON</button>
                 </div>
             </header>
             <p id="s_loading" data-i18n="statsLoading">Loading…</p>

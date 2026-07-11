@@ -24,7 +24,7 @@ for (const hf of ["index.html", "stats.html"]) {
 }
 if (annotated < 30) errors.push(`HTML 标注过少（${annotated} < 30），疑似漏标`);
 
-for (const f of ["main.js", "i18n.js", "groupview.js", "stats.js", "stats-data.js"]) {
+for (const f of ["main.js", "i18n.js", "groupview.js", "stats.js", "stats-data.js", "export.js"]) {
     const js = read(f);
     const callRe = /getMessage\("([A-Za-z0-9_@]+)"/g;
     while ((m = callRe.exec(js)) !== null) {

@@ -296,3 +296,54 @@ function renderDay(agg) {
         days.map(function (d) { return [fmtDate.format(d.dayStart), d.count]; })
     );
 }
+
+// ---------- 导出（访问明细） ----------
+/**@type{() => Array<object>} 按当前窗口过滤 visits，映射导出列*/
+S.exportedRows = function () {
+    const windowStart = new Date(S.data.now);
+    windowStart.setHours(0, 0, 0, 0);
+    const start = windowStart.getTime() - (S.range - 1) * STATS_DAY;
+    const rows = [];
+    for (const v of S.data.visits) {
+        if (v.time >= start && v.time <= S.data.now) {
+            rows.push({
+                time: new Date(v.time).toLocaleString(),
+                host: v.host,
+                title: v.title ?? "",
+                url: v.url,
+            });
+        }
+    }
+    rows.sort(function (a, b) { return a.time < b.time ? 1 : -1; });
+    return rows;
+};
+
+const STATS_EXPORT_COLUMNS = [
+    {key: "time", headerKey: "exportColTime"},
+    {key: "host", headerKey: "exportColHost"},
+    {key: "title", headerKey: "exportColTitle"},
+    {key: "url", headerKey: "exportColUrl"},
+];
+
+/**@type{(kind: "csv"|"json") => undefined}*/
+S.doExport = function (kind) {
+    if (S.data === null) {
+        return;
+    }
+    const rows = S.exportedRows();
+    if (rows.length === 0) {
+        return;
+    }
+    const name = exportFilename("history-" + S.range + "d", kind, Date.now());
+    if (kind === "csv") {
+        const cols = STATS_EXPORT_COLUMNS.map(function (c) {
+            return {key: c.key, header: chrome.i18n.getMessage(c.headerKey)};
+        });
+        downloadText(name, "text/csv;charset=utf-8", toCSV(rows, cols));
+    } else {
+        downloadText(name, "application/json", toJSON(rows));
+    }
+};
+
+document.getElementById("exp_csv").addEventListener("click", function () { S.doExport("csv"); });
+document.getElementById("exp_json").addEventListener("click", function () { S.doExport("json"); });
