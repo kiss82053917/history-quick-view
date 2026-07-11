@@ -1058,6 +1058,8 @@ const HHeader = {
 
         } else if (name === "clear") {
             HHeader.openActiveTab("about://settings/clearBrowserData");
+        } else if (name === "stats") {
+            HHeader.openActiveTab(chrome.runtime.getURL("stats.html"));
         } else if (name === "more") {
             HSectionMore.open();
         } else if (name === "keyboard") {

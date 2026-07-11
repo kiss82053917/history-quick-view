@@ -1,0 +1,139 @@
+/*主题变量与 style.css 保持同值（d/l/a 三主题）*/
+html.d {
+    --color: #e8eaed;
+    --color-secondary: #9aa0a6;
+    --color-bg: #202124;
+    --color-bg-d: #292a2d;
+
+    --color-hover: #2d2e31;
+    --color-hover-l: #3c4043;
+    --color-border: #3c4043;
+    --color-primary: #8ab4f8;
+    --color-danger: #f28b82;
+    accent-color: #8ab4f8;
+    color-scheme: dark;
+}
+
+html.l {
+    --color: #202124;
+    --color-secondary: #5f6368;
+    --color-bg: #ffffff;
+    --color-bg-d: #f1f3f4;
+
+    --color-hover: #f1f3f4;
+    --color-hover-l: #e8eaed;
+    --color-border: #dadce0;
+    --color-primary: #1a73e8;
+    --color-danger: #d93025;
+    accent-color: #1a73e8;
+    color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+    html.a {
+        --color: #e8eaed;
+        --color-secondary: #9aa0a6;
+        --color-bg: #202124;
+        --color-bg-d: #292a2d;
+
+        --color-hover: #2d2e31;
+        --color-hover-l: #3c4043;
+        --color-border: #3c4043;
+        --color-primary: #8ab4f8;
+        --color-danger: #f28b82;
+        accent-color: #8ab4f8;
+        color-scheme: dark;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    html.a {
+        --color: #202124;
+        --color-secondary: #5f6368;
+        --color-bg: #ffffff;
+        --color-bg-d: #f1f3f4;
+
+        --color-hover: #f1f3f4;
+        --color-hover-l: #e8eaed;
+        --color-border: #dadce0;
+        --color-primary: #1a73e8;
+        --color-danger: #d93025;
+        accent-color: #1a73e8;
+        color-scheme: light;
+    }
+}
+
+html {
+    background: var(--color-bg, #202124);
+    font-size: 10px;
+    box-sizing: border-box;
+}
+*, *::before, *::after { box-sizing: inherit; }
+body {
+    margin: 0;
+    font-family: "Roboto","Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    background: var(--color-bg);
+    color: var(--color);
+}
+[data-css-hidden] { display: none; }
+
+.stats {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 16px 40px;
+}
+.stats-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 16px;
+}
+.stats-header h1 { font-size: 2rem; font-weight: 500; margin: 0; }
+
+.range { display: flex; gap: 0; border: 1px solid var(--color-border); border-radius: 18px; overflow: hidden; }
+.range button {
+    border: none; background: transparent; color: var(--color);
+    font: inherit; font-size: 1.3rem; padding: 6px 14px; cursor: pointer;
+}
+.range button:hover { background: var(--color-hover); }
+.range button[data-active] { background: var(--color-primary); color: var(--color-bg); }
+
+#s_loading, #s_empty, #s_error { font-size: 1.4rem; color: var(--color-secondary); padding: 40px 0; text-align: center; }
+#s_error { color: var(--color-danger); }
+
+.tiles { display: flex; gap: 16px; padding-bottom: 8px; }
+.tile { flex: 1; background: var(--color-bg-d); border-radius: 8px; padding: 14px 16px; }
+.tile .label { margin: 0; font-size: 1.3rem; color: var(--color-secondary); }
+.tile .value { margin: 4px 0 0; font-size: 2.8rem; font-weight: 600; }
+
+.chart { padding: 20px 0 4px; }
+.chart h2 { font-size: 1.5rem; font-weight: 500; margin: 0 0 12px; }
+.chart svg { display: block; width: 100%; height: auto; }
+.chart text { font-size: 11px; fill: var(--color-secondary); font-family: inherit; }
+
+/* Top 榜（HTML 比例条） */
+.toprow { display: flex; align-items: center; gap: 8px; height: 30px; }
+.toprow img { width: 16px; height: 16px; }
+.toprow .host { width: 180px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 1.3rem; margin: 0; }
+.toprow .bar-track { flex: 1; }
+.toprow .bar {
+    height: 16px; max-height: 16px;
+    background: var(--color-primary);
+    border-radius: 0 4px 4px 0; /* 数据端圆角、基线端直角 */
+}
+.toprow .count { width: 56px; text-align: right; font-size: 1.3rem; color: var(--color-secondary); font-variant-numeric: tabular-nums; margin: 0; }
+.toprow:hover { background: var(--color-hover); border-radius: 6px; cursor: pointer; }
+
+.chart-table { padding-top: 6px; }
+.chart-table summary { font-size: 1.2rem; color: var(--color-secondary); cursor: pointer; }
+.chart-table table { border-collapse: collapse; font-size: 1.2rem; margin-top: 6px; }
+.chart-table td, .chart-table th { border: 1px solid var(--color-border); padding: 3px 10px; font-variant-numeric: tabular-nums; }
+
+.cap { font-size: 1.2rem; color: var(--color-secondary); }
+
+.tooltip {
+    position: fixed; z-index: 10; pointer-events: none;
+    background: var(--color-bg-d); color: var(--color);
+    border: 1px solid var(--color-border); border-radius: 6px;
+    padding: 5px 9px; font-size: 1.2rem; white-space: nowrap;
+}
