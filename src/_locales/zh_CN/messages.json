@@ -1,6 +1,6 @@
 {
-    "extName": { "message": "历史记录速览" },
-    "extDesc": { "message": "快速查看、搜索和删除浏览历史记录" },
+    "extName": { "message": "历史管家" },
+    "extDesc": { "message": "浏览历史一站式管理：模糊搜索、按网站分组、中文日期筛选、访问统计图表、导出 CSV/JSON，纯本地不上传。" },
     "ttGoHistory": { "message": "打开历史记录页" },
     "ttClearData": { "message": "清除浏览数据" },
     "ttAbout": { "message": "关于" },

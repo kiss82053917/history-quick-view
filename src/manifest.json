@@ -4,7 +4,7 @@
     "default_locale": "zh_CN",
     "name": "__MSG_extName__",
     "description": "__MSG_extDesc__",
-    "author": "axarisar",
+    "author": "kiss82053917",
     "action": {
         "default_icon": {
             "16": "images/toolbar16.png",

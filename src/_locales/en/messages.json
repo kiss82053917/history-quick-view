@@ -1,6 +1,6 @@
 {
-    "extName": { "message": "History Quick View" },
-    "extDesc": { "message": "View, delete and search browsing history data" },
+    "extName": { "message": "History Manager+" },
+    "extDesc": { "message": "Manage browsing history: fuzzy search, group by site, date filters, stats charts, CSV/JSON export. Fully local, no uploads." },
     "ttGoHistory": { "message": "Go to history" },
     "ttClearData": { "message": "Clear browsing history" },
     "ttAbout": { "message": "About" },

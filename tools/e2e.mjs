@@ -159,9 +159,9 @@ for (let i = 0; i < 20; i++) {
 await sleep(400);
 
 // ---------- 一期回归：汉化 ----------
-check("标题为中文", (await ev("document.title")) === "历史记录速览");
+check("标题为中文", (await ev("document.title")) === "历史管家");
 check("html lang=zh-CN", (await ev("document.documentElement.lang")) === "zh-CN");
-check("h1 品牌名", (await ev(`document.querySelector(".header h1 a").textContent`)) === "历史记录速览");
+check("h1 品牌名", (await ev(`document.querySelector(".header h1 a").textContent`)) === "历史管家");
 check("历史按钮 tooltip", (await ev(`document.querySelector('button[name="history"]').title`)) === "打开历史记录页");
 check("清除按钮 tooltip", (await ev(`document.querySelector('button[name="clear"]').title`)) === "清除浏览数据");
 check("更多按钮 tooltip", (await ev(`document.querySelector('button[name="more"]').title`)) === "设置");
