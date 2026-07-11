@@ -524,6 +524,18 @@ form[name="search"][data-css-hidden]~.search-container {
     font-weight: 500;
 }
 
+/*PHASE4: 搜索结果导出按钮（挂在 .range/section 上，与 .date 同级）*/
+#g_container .range {
+    position: relative;
+}
+#g_container .range .export-btn {
+    position: absolute;
+    right: 8px;
+    top: 3px;
+    z-index: var(--z-index-high);
+    padding: 4px;
+}
+
 /*PHASE2: 视图切换与分组*/
 form[name="search"] button[name="viewtoggle"] {
     position: static;

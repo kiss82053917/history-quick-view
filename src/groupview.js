@@ -43,6 +43,8 @@ const HGroupView = {
     }()),
     MAX_RESULTS: 500,
     renderSeq: 0,
+    /**@type{Array<chrome.history.HistoryItem>}*/
+    lastResults: [],
     /**
      * hostname 后缀匹配 site 过滤值
      * @type{(url: string, site: string) => boolean}*/
@@ -101,12 +103,16 @@ const HGroupView = {
                 return r.it;
             });
         }
+        HGroupView.lastResults = results;
         const frag = HRange.TEMPLATE_SEARCH.cloneNode(true);
         const section = frag.firstElementChild;
         section.querySelector(".title").insertAdjacentText(
             "beforeend",
             chrome.i18n.getMessage("searchResults", [String(results.length)])
         );
+        if (results.length > 0) {
+            section.appendChild(HGroupView.makeExportBtn());
+        }
         for (const it of results) {
             section.appendChild(
                 HItem.create(it.url, it.title, it.id, it.lastVisitTime)
@@ -151,6 +157,7 @@ const HGroupView = {
         const sorted = [...groups.entries()].sort(function (a, b) {
             return b[1][0].lastVisitTime - a[1][0].lastVisitTime;
         });
+        HGroupView.lastResults = sorted.flatMap(function (entry) { return entry[1]; });
         const frag = document.createDocumentFragment();
         for (const entry of sorted) {
             const host = entry[0];
@@ -176,9 +183,56 @@ const HGroupView = {
         }
         HGroupView.CONTAINER.replaceChildren(frag);
     },
+    makeExportBtn() {
+        const btn = document.createElement("button");
+        btn.className = "shell export-btn";
+        btn.type = "button";
+        btn.title = chrome.i18n.getMessage("exportTitle");
+        btn.setAttribute("data-export", "");
+        btn.innerHTML = '<svg class="icon icon-download" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>';
+        return btn;
+    },
+    /**@type{(kind: "csv"|"json") => undefined}*/
+    exportResults(kind) {
+        const items = HGroupView.lastResults;
+        if (items.length === 0) {
+            return;
+        }
+        const rows = items.map(function (it) {
+            let host = "";
+            try {
+                host = new URL(it.url).hostname.toLowerCase();
+            } catch { /* 保持空串 */ }
+            return {
+                title: it.title ?? "",
+                host,
+                url: it.url,
+                lastVisit: new Date(it.lastVisitTime).toLocaleString(),
+            };
+        });
+        const name = exportFilename("history-search", kind, Date.now());
+        if (kind === "csv") {
+            const cols = [
+                {key: "title", header: chrome.i18n.getMessage("exportColTitle")},
+                {key: "host", header: chrome.i18n.getMessage("exportColHost")},
+                {key: "url", header: chrome.i18n.getMessage("exportColUrl")},
+                {key: "lastVisit", header: chrome.i18n.getMessage("exportColLastVisit")},
+            ];
+            downloadText(name, "text/csv;charset=utf-8", toCSV(rows, cols));
+        } else {
+            downloadText(name, "application/json", toJSON(rows));
+        }
+    },
     /**@type{(e: MouseEvent) => undefined}*/
     onclick(e) {
         const target = e.target;
+        if (target.closest("[data-export]") !== null) {
+            e.preventDefault();
+            //确定=CSV，取消=JSON（tooltip 已说明；轻量交互）
+            const csv = window.confirm(chrome.i18n.getMessage("exportChoose"));
+            HGroupView.exportResults(csv ? "csv" : "json");
+            return;
+        }
         const type = target.getAttribute("data-type");
         if (type === "remove") {
             e.preventDefault();
