@@ -8,6 +8,7 @@
     "ttMore": { "message": "设置" },
     "ttClose": { "message": "关闭" },
     "searchPlaceholder": { "message": "搜索历史记录" },
+    "datePlaceholder": { "message": "今天" },
     "searchAria": { "message": "搜索浏览历史" },
     "noHistory": { "message": "暂无历史记录" },
     "errorTitle": { "message": "抱歉，出错了" },

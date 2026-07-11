@@ -898,10 +898,11 @@ const HSearchForm = {
         const text = HSearchForm.FORM["text"].value;
         const target = HSearchForm.FORM["date"]
         let endtime = 0;
-        if (target.value.length === 0) {
+        const dateExpr = translateChineseDateExpr(target.value);
+        if (dateExpr.length === 0) {
             endtime = TimeRange.createStart(Date.now()) + DAY;
         } else {
-            endtime = DateParser.parse(target.value);
+            endtime = DateParser.parse(dateExpr);
             if (endtime === -1) {
                 target.setAttribute("data-css-invalid", "");
                 HHeader.LOADING.setAttribute("data-css-hidden", "");

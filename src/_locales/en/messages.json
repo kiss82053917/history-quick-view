@@ -8,6 +8,7 @@
     "ttMore": { "message": "Settings" },
     "ttClose": { "message": "Close" },
     "searchPlaceholder": { "message": "Search history" },
+    "datePlaceholder": { "message": "today" },
     "searchAria": { "message": "on browsing history" },
     "noHistory": { "message": "No History" },
     "errorTitle": { "message": "Sorry, an ERROR occurs" },
