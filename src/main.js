@@ -68,6 +68,7 @@ let searchDateTimeout = undefined;
 let searchMode = false;
 let totalItems = 0;
 let itemsFromSearch = 0;
+const seenItemIds = new Set();
 let noMoreContent = false;
 let visited = [];
 let lastRangeIsFull = false;
@@ -876,6 +877,7 @@ const HSearchForm = {
             HSearchCointainer.CONTAINER.replaceChildren();
 
             TimeRange.reset();
+            seenItemIds.clear();
             visited.length = 0;
             totalItems = 0;
             lastItemId = "";
@@ -915,6 +917,7 @@ const HSearchForm = {
             HSearchCointainer.CONTAINER.replaceChildren();
 
             TimeRange.reset();
+            seenItemIds.clear();
 
             visited.length = 0;
             totalItems = 0;
@@ -1417,6 +1420,12 @@ async function searchToDOM(historyItems) {
             lastVisitTime = item.lastVisitTime;
         }
 
+        if (seenItemIds.has(item.id)) {
+            i += 1;
+            continue;
+        }
+        seenItemIds.add(item.id);
+
         Fragment.appendChild(
             HItem.create(item.url, item.title, item.id, lastVisitTime)
         );
@@ -1428,6 +1437,16 @@ async function searchToDOM(historyItems) {
     console.info("\tlastVisitTime:", lastVisitTime);
     console.info("\turl:", item.url);
 
+    if (itemsCreated === 0 && i >= historyItems.length) {
+        noMoreContent = true;
+        SearchQuery.maxResults = MAX_SEARCH_RESULTS;
+        itemsFromSearch = 0;
+        if (totalItems === 0) {
+            HSearchCointainer.EMPTY.removeAttribute("data-css-hidden");
+        }
+        HHeader.LOADING.setAttribute("data-css-hidden", "");
+        return;
+    }
 
     if (TimeRange.length == 0) {
         if (-1 === TimeRange.add(timeRangeEnd, timeRangeStart)) {
