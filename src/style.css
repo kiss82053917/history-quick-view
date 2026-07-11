@@ -523,3 +523,60 @@ form[name="search"][data-css-hidden]~.search-container {
     color: var(--color-secondary);
     font-weight: 500;
 }
+
+/*PHASE2: 视图切换与分组*/
+form[name="search"] button[name="viewtoggle"] {
+    position: static;
+    transform: none;
+    flex-shrink: 0;
+}
+main[data-view="t"] .icon-clock {
+    display: none;
+}
+main[data-view="s"] .icon-globe {
+    display: none;
+}
+main[data-view="s"] form[name="search"] .container.date {
+    display: none;
+}
+main[data-view="s"] form[name="search"] .container.text {
+    width: 100%;
+}
+
+.group {
+    border-radius: var(--border-radius);
+}
+.group summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: var(--item-height);
+    padding: var(--padding);
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    list-style: none;
+}
+.group summary::-webkit-details-marker {
+    display: none;
+}
+.group summary:hover {
+    background: var(--color-hover);
+}
+.group .gtitle {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    font-weight: 500;
+}
+.group .gcount {
+    --font-size: 1.2rem;
+    color: var(--color-secondary);
+    min-width: 30px;
+    text-align: right;
+}
+.group[open] summary {
+    color: var(--color-primary);
+}
+.group .group-items {
+    padding-left: 8px;
+}

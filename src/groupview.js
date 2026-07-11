@@ -55,8 +55,8 @@ const HGroupView = {
         }
         return host === site || host.endsWith("." + site);
     },
-    /**@type{(rawQuery: string) => undefined}*/
-    render(rawQuery) {
+    /**@type{(rawQuery: string, view: string) => undefined}*/
+    render(rawQuery, view) {
         const seq = HGroupView.renderSeq += 1;
         const q = parseQuery(rawQuery);
         HHeader.LOADING.removeAttribute("data-css-hidden");
@@ -70,7 +70,11 @@ const HGroupView = {
                     return HGroupView.matchSite(it.url, q.site);
                 });
             }
-            HGroupView.renderFlat(filtered, q.terms);
+            if (view === VIEW_SITE) {
+                HGroupView.renderGroups(filtered, q.terms);
+            } else {
+                HGroupView.renderFlat(filtered, q.terms);
+            }
             HHeader.LOADING.setAttribute("data-css-hidden", "");
         }).catch(function (e) {
             console.error(e);
@@ -107,6 +111,68 @@ const HGroupView = {
             section.appendChild(
                 HItem.create(it.url, it.title, it.id, it.lastVisitTime)
             );
+        }
+        HGroupView.CONTAINER.replaceChildren(frag);
+    },
+    GROUP_TEMPLATE: (function () {
+        const template = document.getElementById("template_group");
+        if (template === null) {
+            throw Error("ERROR: #template_group does not exist");
+        }
+        return template.content;
+    }()),
+    /**@type{(items: Array<chrome.history.HistoryItem>, terms: string) => undefined}*/
+    renderGroups(items, terms) {
+        let pool = items;
+        if (terms.length !== 0) {
+            pool = items.filter(function (it) {
+                return fuzzyMatch(terms, it) >= 0;
+            });
+        }
+        /**@type{Map<string, Array<chrome.history.HistoryItem>>}*/
+        const groups = new Map();
+        for (const it of pool) {
+            let host;
+            try {
+                host = new URL(it.url).hostname.toLowerCase();
+            } catch {
+                host = "";
+            }
+            if (host === "") {
+                host = chrome.i18n.getMessage("otherSites");
+            }
+            const arr = groups.get(host);
+            if (arr === undefined) {
+                groups.set(host, [it]);
+            } else {
+                arr.push(it);
+            }
+        }
+        const sorted = [...groups.entries()].sort(function (a, b) {
+            return b[1][0].lastVisitTime - a[1][0].lastVisitTime;
+        });
+        const frag = document.createDocumentFragment();
+        for (const entry of sorted) {
+            const host = entry[0];
+            const arr = entry[1];
+            const g = HGroupView.GROUP_TEMPLATE.cloneNode(true);
+            const details = g.firstElementChild;
+            details.querySelector('[name="img"]').setAttribute("src", getFavicon(arr[0].url));
+            details.querySelector('[name="gtitle"]').insertAdjacentText("beforeend", host);
+            details.querySelector('[name="gcount"]').insertAdjacentText("beforeend", String(arr.length));
+            //懒渲染：展开时才填条目
+            details.addEventListener("toggle", function () {
+                if (details.open && details.filled !== true) {
+                    details.filled = true;
+                    const itemsDiv = details.querySelector('[name="items"]');
+                    for (const it of arr) {
+                        itemsDiv.appendChild(
+                            HItem.create(it.url, it.title, it.id, it.lastVisitTime)
+                        );
+                    }
+                }
+            }, false);
+            frag.appendChild(g);
         }
         HGroupView.CONTAINER.replaceChildren(frag);
     },

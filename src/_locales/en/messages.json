@@ -49,5 +49,8 @@
         "placeholders": { "count": { "content": "$1" } }
     },
     "errFetchAll": { "message": "Failed to load history" },
+    "viewByTime": { "message": "By time" },
+    "viewBySite": { "message": "By site" },
+    "otherSites": { "message": "Other" },
     "errDomRange": { "message": "DOMRange is null" }
 }

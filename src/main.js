@@ -51,6 +51,8 @@ const STORAGE_OPEN_NEW = "n";
 const STORAGE_THEME_DARK = "d";
 const STORAGE_THEME_LIGHT = "l";
 const STORAGE_THEME_AUTO = "a";
+const VIEW_TIME = "t";
+const VIEW_SITE = "s";
 
 
 const storage = {
@@ -58,6 +60,7 @@ const storage = {
     open: STORAGE_OPEN_CURRENT,
     theme: STORAGE_THEME_DARK,
     showSearch: true,
+    view: VIEW_TIME,
 };
 
 //Global Variables
@@ -674,6 +677,11 @@ function initStorage(items) {
     } else {
         set = true;
     }
+    if (items.view === VIEW_TIME || items.view === VIEW_SITE) {
+        storage.view = items.view;
+    } else {
+        set = true;
+    }
     if (set) {
         chrome.storage.local.set(storage, undefined);
     }
@@ -960,6 +968,15 @@ const HSearchForm = {
         }
         HHeader.LOADING.removeAttribute("data-css-hidden");
         searchDateTimeout = setTimeout(HSearchForm.ondatetimeout, HSearchForm.TIMEOUT);
+    },
+    onviewtoggle() {
+        storage.view = (storage.view === VIEW_SITE) ? VIEW_TIME : VIEW_SITE;
+        chrome.storage.local.set(storage, undefined);
+        if (!updateResultsView()) {
+            //回到时间浏览：哨兵值使 ontimeout 的既有比较必不相等，强制重置+重拉
+            InitSearchQuery.text = "￿";
+            HSearchForm.ontimeout();
+        }
     },
     clear() {
         if (searchTimeout !== undefined) {
@@ -1547,11 +1564,15 @@ function searchAgain() {
  * @type{() => boolean} 返回 true 表示本次由新管线接管 */
 function updateResultsView() {
     const text = HSearchForm.FORM["text"].value;
-    if (text.length !== 0) {
+    HMain.MAIN.setAttribute("data-view", storage.view);
+    HSearchForm.FORM["viewtoggle"].setAttribute("title", chrome.i18n.getMessage(
+        storage.view === VIEW_SITE ? "viewByTime" : "viewBySite"
+    ));
+    if (storage.view === VIEW_SITE || text.length !== 0) {
         HSearchCointainer.CONTAINER.setAttribute("data-css-hidden", "");
         HSearchCointainer.CONTAINER.onscroll = null;
         HGroupView.CONTAINER.removeAttribute("data-css-hidden");
-        HGroupView.render(text);
+        HGroupView.render(text, storage.view);
         return true;
     }
     HGroupView.CONTAINER.setAttribute("data-css-hidden", "");
@@ -1625,8 +1646,10 @@ chrome.storage.local.get(
 
         SearchQuery.endTime = TimeRange.createStart(Date.now()) + DAY;
         InitSearchQuery.endTime = SearchQuery.endTime;
-        //throws
-        chrome.history.search(SearchQuery, searchToDOM);
+        if (!updateResultsView()) {
+            //throws
+            chrome.history.search(SearchQuery, searchToDOM);
+        }
 
         document.addEventListener("keyup", DocumentOnkeyup, false);
 
@@ -1641,6 +1664,11 @@ chrome.storage.local.get(
         HSearchForm.FORM["clear-text"].addEventListener(
             "click",
             HSearchForm.clear,
+            false
+        );
+        HSearchForm.FORM["viewtoggle"].addEventListener(
+            "click",
+            HSearchForm.onviewtoggle,
             false
         );
         HSearchForm.FORM["date"].addEventListener(

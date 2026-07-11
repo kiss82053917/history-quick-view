@@ -49,5 +49,8 @@
         "placeholders": { "count": { "content": "$1" } }
     },
     "errFetchAll": { "message": "读取历史记录失败" },
+    "viewByTime": { "message": "按时间浏览" },
+    "viewBySite": { "message": "按网站浏览" },
+    "otherSites": { "message": "其他" },
     "errDomRange": { "message": "DOMRange 为空" }
 }

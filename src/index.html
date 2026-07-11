@@ -91,6 +91,16 @@
                 </button>
             </a>
         </template>
+        <template id="template_group">
+            <details class="group">
+                <summary class="group-head">
+                    <img class="favicon" name="img" src="" alt="" width="16" height="16">
+                    <p class="gtitle" name="gtitle"></p>
+                    <p class="gcount" name="gcount"></p>
+                </summary>
+                <div class="group-items" name="items"></div>
+            </details>
+        </template>
     </head>
     <body>
         <header class="header">
@@ -346,6 +356,40 @@
                             data-i18n-placeholder="datePlaceholder"
                         />
                     </div>
+                    <button
+                        name="viewtoggle"
+                        type="button"
+                        class="shell"
+                        title=""
+                    >
+                        <svg
+                            class="icon icon-clock"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                        <svg
+                            class="icon icon-globe"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+                            <path d="M2 12h20"/>
+                        </svg>
+                    </button>
                 </form>
                 <div class="search-container">
                     <p id="m_empty" class="empty" data-css-hidden data-i18n="noHistory">
