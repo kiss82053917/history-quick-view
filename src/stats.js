@@ -196,7 +196,7 @@ function renderHour(agg) {
         const r = Math.min(4, bh); //数据端圆角、基线直角
         const bar = svgEl("path", {
             d: `M${x},${B} L${x},${y + r} Q${x},${y} ${x + r},${y} L${x + bw - r},${y} Q${x + bw},${y} ${x + bw},${y + r} L${x + bw},${B} Z`,
-            fill: "var(--color-primary)",
+            fill: "var(--chart-color)",
         });
         bar.addEventListener("mousemove", function (e) {
             Tooltip.show(`${h}:00 – ${visitsText(v)}`, e.clientX, e.clientY);
@@ -253,16 +253,16 @@ function renderDay(agg) {
     }
     svg.appendChild(svgEl("path", {
         d: line + `L${px(days.length - 1)},${B} L${px(0)},${B} Z`,
-        fill: "var(--color-primary)", opacity: 0.1, stroke: "none",
+        fill: "var(--chart-color)", opacity: 0.1, stroke: "none",
     }));
     svg.appendChild(svgEl("path", {
-        d: line, fill: "none", stroke: "var(--color-primary)",
+        d: line, fill: "none", stroke: "var(--chart-color)",
         "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round",
     }));
     const last = days.length - 1;
     svg.appendChild(svgEl("circle", {
         cx: px(last), cy: py(days[last].count), r: 4,
-        fill: "var(--color-primary)", stroke: "var(--color-bg)", "stroke-width": 2,
+        fill: "var(--chart-color)", stroke: "var(--color-bg)", "stroke-width": 2,
     }));
     const step = Math.max(1, Math.round(days.length / 6));
     for (let i = 0; i < days.length; i += step) {

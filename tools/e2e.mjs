@@ -275,6 +275,40 @@ check("快捷键 m 关设置页", (await ev(`document.getElementById("main").get
 await pressKey("s", "KeyS");
 check("快捷键 s 聚焦搜索", (await ev(`document.activeElement.name`)) === "text");
 
+// ---------- 三期：统计页 ----------
+check("统计按钮存在", await ev(`document.querySelector('button[name="stats"]') !== null`));
+check("统计按钮 tooltip", (await ev(`document.querySelector('button[name="stats"]').title`)) === "统计");
+await c.send("Page.navigate", { url: `chrome-extension://${EXT}/stats.html` });
+await sleep(2500);
+check("stats 标题中文", (await ev(`document.querySelector(".stats-header h1").textContent`)) === "浏览统计");
+check("默认 30 天选中", await ev(`document.querySelector('.range button[data-range="30"]').hasAttribute("data-active")`));
+check("汇总数字为正", await ev(`Number(document.getElementById("v_total").textContent.replace(/,/g, "")) > 0`));
+check("Top 榜有行", (await ev(`document.querySelectorAll("#chart_top .toprow").length`)) >= 1);
+check("24h 图 24 柱", (await ev(`document.querySelectorAll("#chart_hour svg path").length`)) === 24);
+check("趋势图折线存在", (await ev(`document.querySelectorAll("#chart_day svg path").length`)) >= 2);
+check("趋势图 30 天点数", await ev(`(function(){
+    const rows = document.querySelectorAll("#chart_day .chart-table table tr");
+    return rows.length === 31; //表头+30 天
+})()`));
+// 范围切换
+await ev(`document.querySelector('.range button[data-range="7"]').click()`);
+await sleep(400);
+check("切 7 天选中态", await ev(`document.querySelector('.range button[data-range="7"]').hasAttribute("data-active")`));
+check("切 7 天表格 8 行", (await ev(`document.querySelectorAll("#chart_day .chart-table table tr").length`)) === 8);
+check("范围持久化", (await ev(`chrome.storage.local.get().then((s) => s.statsRange)`, true)) === 7);
+// 数据表展开
+await ev(`document.querySelector("#chart_top .chart-table").open = true`);
+check("Top 数据表有行", (await ev(`document.querySelectorAll("#chart_top .chart-table table tr").length`)) >= 2);
+// 深色截图（当前 theme=d）
+await screenshot(ASSETS + "phase3-stats-dark.png");
+// 浅色截图
+await ev(`chrome.storage.local.get().then((s) => chrome.storage.local.set({...s, theme: "l"}))`, true);
+await c.send("Page.reload");
+await sleep(2500);
+check("浅色主题生效", (await ev(`document.documentElement.className`)) === "l");
+await screenshot(ASSETS + "phase3-stats-light.png");
+await ev(`chrome.storage.local.get().then((s) => chrome.storage.local.set({...s, theme: "d"}))`, true);
+
 // ---------- 收尾 ----------
 console.log(`\ne2e: ${pass} PASS / ${fail} FAIL`);
 c.close();
