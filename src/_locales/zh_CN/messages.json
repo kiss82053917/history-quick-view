@@ -44,5 +44,10 @@
         "placeholders": { "date": { "content": "$1" } }
     },
     "errCreateRange": { "message": "创建时间范围失败" },
+    "searchResults": {
+        "message": "搜索结果（$COUNT$ 条）",
+        "placeholders": { "count": { "content": "$1" } }
+    },
+    "errFetchAll": { "message": "读取历史记录失败" },
     "errDomRange": { "message": "DOMRange 为空" }
 }

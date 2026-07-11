@@ -44,5 +44,10 @@
         "placeholders": { "date": { "content": "$1" } }
     },
     "errCreateRange": { "message": "Creating Time Range fails" },
+    "searchResults": {
+        "message": "Search results ($COUNT$)",
+        "placeholders": { "count": { "content": "$1" } }
+    },
+    "errFetchAll": { "message": "Failed to load history" },
     "errDomRange": { "message": "DOMRange is null" }
 }

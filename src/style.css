@@ -517,3 +517,9 @@ form[name="search"][data-css-hidden]~.search-container {
 .page footer a:hover {
     background: var(--color-hover);
 }
+
+/*PHASE2: 新管线容器*/
+#g_container .date .title {
+    color: var(--color-secondary);
+    font-weight: 500;
+}

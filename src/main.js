@@ -869,6 +869,10 @@ const HSearchForm = {
     ontimeout() {
         searchTimeout = undefined;
         const text = HSearchForm.FORM["text"].value;
+        if (updateResultsView()) {
+            InitSearchQuery.text = text;
+            return;
+        }
         if (InitSearchQuery.text !== text) {
             InitSearchQuery.text = text;
             SearchQuery.text = text;
@@ -1536,6 +1540,24 @@ function searchAgain() {
     }
 }
 
+
+/**
+ * 新旧管线切换唯一入口：搜索词非空走 HGroupView 新管线，
+ * 否则回到原时间浏览管线（由调用方 ontimeout 的既有重置逻辑重拉）。
+ * @type{() => boolean} 返回 true 表示本次由新管线接管 */
+function updateResultsView() {
+    const text = HSearchForm.FORM["text"].value;
+    if (text.length !== 0) {
+        HSearchCointainer.CONTAINER.setAttribute("data-css-hidden", "");
+        HSearchCointainer.CONTAINER.onscroll = null;
+        HGroupView.CONTAINER.removeAttribute("data-css-hidden");
+        HGroupView.render(text);
+        return true;
+    }
+    HGroupView.CONTAINER.setAttribute("data-css-hidden", "");
+    HSearchCointainer.CONTAINER.removeAttribute("data-css-hidden");
+    return false;
+}
 
 /**
  * @type {(e: MouseEvent) => undefined}*/
