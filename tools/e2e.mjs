@@ -101,7 +101,15 @@ async function type(v) {
         i.value = ${JSON.stringify(v)};
         i.dispatchEvent(new InputEvent("input", {bubbles: true}));
     })()`);
-    await sleep(900);
+    // 等过 500ms 防抖，再轮询到加载指示器落定——搜索走 HistoryCache.getAll（首次拉 2 万条）
+    // 是异步慢管线，固定 sleep 会偶发扑空（冷启动竞态）。轮询 #h_loading 隐藏即 render 完成。
+    await sleep(650);
+    for (let i = 0; i < 20; i++) {
+        const busy = await ev(`!document.getElementById("h_loading").hasAttribute("data-css-hidden")`);
+        if (!busy) break;
+        await sleep(150);
+    }
+    await sleep(150);
 }
 async function typeDate(v) {
     await ev(`(function(){
@@ -140,7 +148,15 @@ await ev(`Promise.all([
     "https://example.com/test-delete-me",
 ].map((u) => chrome.history.addUrl({url: u})))`, true);
 await c.send("Page.reload");
-await sleep(1800);
+// 轮询等首屏渲染完成——m_container 有条目即证明 storage 初始化回调已跑、搜索监听器已挂，
+// 消除"首次搜索早于监听器挂载"的冷启动竞态（否则首个 type() 会丢事件）
+await sleep(800);
+for (let i = 0; i < 20; i++) {
+    const ready = await ev(`document.querySelectorAll('#m_container [data-type="item"]').length > 0`);
+    if (ready) break;
+    await sleep(300);
+}
+await sleep(400);
 
 // ---------- 一期回归：汉化 ----------
 check("标题为中文", (await ev("document.title")) === "历史记录速览");
