@@ -1,8 +1,9 @@
 {
     "manifest_version": 3,
-    "version": "0.4.3",
-    "name": "History quick view",
-    "description": "View, delete and search browsing history data",
+    "version": "0.5.0",
+    "default_locale": "zh_CN",
+    "name": "__MSG_extName__",
+    "description": "__MSG_extDesc__",
     "author": "axarisar",
     "action": {
         "default_icon": {
@@ -10,7 +11,7 @@
             "32": "images/toolbar32.png"
         },
         "default_popup": "index.html",
-        "default_title": "History quick view"
+        "default_title": "__MSG_extName__"
     },
     "icons": {
         "16": "images/icon16.png",
@@ -19,5 +20,5 @@
         "128": "images/icon128.png"
     },
     "permissions": ["favicon", "storage", "history"],
-    "homepage_url": "https://github.com/AxelArielSaravia/history-quick-view"
+    "homepage_url": "https://github.com/kiss82053917/history-quick-view"
 }
