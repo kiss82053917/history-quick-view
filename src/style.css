@@ -1,5 +1,5 @@
 :root {
-    --font: verdada,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
+    --font: "Roboto","Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
 
     --icon-size: 20px;
 
@@ -10,13 +10,13 @@
 
     --item-height: 35px;
 
-    --border-radius: 5px;
+    --border-radius: 8px;
     --search-height: 476px;
     --page-height: 531px;
 }
 
 html {
-    background: #000;
+    background: var(--color-bg, #202124);
     font-size: 10px;
     box-sizing: border-box;
 }
@@ -28,25 +28,67 @@ html {
 }
 
 html.d {
-    --color: #efe8e8;
-    --color-bg: #3d3d3d;
-    --color-bg-d: #2b2b2b;
+    --color: #e8eaed;
+    --color-secondary: #9aa0a6;
+    --color-bg: #202124;
+    --color-bg-d: #292a2d;
 
-    --color-hover: #4f4d4d;
-    --color-hover-l: #656363;
-    accent-color: #3d3d3d;
+    --color-hover: #2d2e31;
+    --color-hover-l: #3c4043;
+    --color-border: #3c4043;
+    --color-primary: #8ab4f8;
+    --color-danger: #f28b82;
+    accent-color: #8ab4f8;
     color-scheme: dark;
 }
 
 html.l {
-    --color: #3d3d3d;
-    --color-bg: #efe8e8;
-    --color-bg-d: #ddd6d6;
+    --color: #202124;
+    --color-secondary: #5f6368;
+    --color-bg: #ffffff;
+    --color-bg-d: #f1f3f4;
 
-    --color-hover: #fff7f7;
-    --color-hover-l: #ffffff;
-    accent-color: #efe8e8;
+    --color-hover: #f1f3f4;
+    --color-hover-l: #e8eaed;
+    --color-border: #dadce0;
+    --color-primary: #1a73e8;
+    --color-danger: #d93025;
+    accent-color: #1a73e8;
     color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+    html.a {
+        --color: #e8eaed;
+        --color-secondary: #9aa0a6;
+        --color-bg: #202124;
+        --color-bg-d: #292a2d;
+
+        --color-hover: #2d2e31;
+        --color-hover-l: #3c4043;
+        --color-border: #3c4043;
+        --color-primary: #8ab4f8;
+        --color-danger: #f28b82;
+        accent-color: #8ab4f8;
+        color-scheme: dark;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    html.a {
+        --color: #202124;
+        --color-secondary: #5f6368;
+        --color-bg: #ffffff;
+        --color-bg-d: #f1f3f4;
+
+        --color-hover: #f1f3f4;
+        --color-hover-l: #e8eaed;
+        --color-border: #dadce0;
+        --color-primary: #1a73e8;
+        --color-danger: #d93025;
+        accent-color: #1a73e8;
+        color-scheme: light;
+    }
 }
 
 body {
@@ -64,7 +106,7 @@ body {
 }
 
 [data-css-invalid] {
-    color: red;
+    color: var(--color-danger);
     text-decoration-line: line-through;
 }
 
@@ -82,7 +124,12 @@ body {
 }
 
 select {
-    padding: 4px;
+    padding: 4px 8px;
+    background: var(--color-bg-d);
+    color: var(--color);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    font-family: var(--font);
 }
 
 a {
@@ -107,10 +154,10 @@ button {
     align-items: center;
     justify-content: center;
     border: none;
-    padding: 5px;
+    padding: 6px;
     color: var(--color);
     font-family: var(--font);
-    border-radius: var(--border-radius);
+    border-radius: 50%;
 }
 
 button:hover {
@@ -121,11 +168,17 @@ button:not(:hover) {
     background: transparent;
 }
 
+:is(a, button, input, select):focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -1px;
+}
+
 kbd {
     font-family: monospace;
-    border: 1px solid var(--color);
-    border-radius: var(--border-radius);
-    padding: 2px 4px;
+    background: var(--color-bg-d);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: 2px 5px;
 }
 
 .icon {
@@ -149,11 +202,15 @@ kbd {
 .header .right {
     display: flex;
     align-items: center;
+    gap: 2px;
 }
 
 .header h1 {
-    font-weight: 600;
+    font-weight: 500;
     padding: 5px;
+}
+.header h1 a {
+    text-decoration: none;
 }
 .header h1 span {
     font-size: 1ch;
@@ -162,6 +219,7 @@ kbd {
 
 .header .loading {
     animation: 2s ease-in-out 0s infinite spin;
+    color: var(--color-primary);
 }
 
 @keyframes spin {
@@ -176,8 +234,8 @@ form[name="search"]:not([data-css-hidden]) {
     display: flex;
     align-items: center;
     position: relative;
-    padding: 0 15px 20px;
-    gap: 5px;
+    padding: 0 15px 16px;
+    gap: 8px;
 }
 
 form[name="search"] .container {
@@ -195,19 +253,26 @@ form[name="search"] .container.date {
 
 form[name="search"] :where(.icon-search, .icon-calendar) {
     position: absolute;
-    transform: translateX(5px);
+    transform: translateX(7px);
+    color: var(--color-secondary);
 }
 
 form[name="search"] input {
     width: 100%;
     min-height: var(--item-height);
     background: var(--color-bg-d);
+    color: var(--color);
     font-family: var(--font);
     border: none;
+    border-radius: 18px;
     line-height: 2;
     padding-right: 1ch;
-    padding-left: calc(5px * 2 + var(--icon-size));
+    padding-left: calc(7px * 2 + var(--icon-size));
     font-size: var(--font-size);
+}
+
+form[name="search"] input::placeholder {
+    color: var(--color-secondary);
 }
 
 form[name="search"] .text input {
@@ -233,7 +298,7 @@ form[name="search"] button {
     position: relative;
 
     padding-block: 5px;
-    border-top: 1px solid var(--color-hover-l);
+    border-top: 1px solid var(--color-border);
     line-height: 2;
 }
 form[name="search"][data-css-hidden]~.search-container {
@@ -248,18 +313,19 @@ form[name="search"][data-css-hidden]~.search-container {
     align-items: center;
     justify-content: center;
 
-    opacity: 40%;
+    opacity: 60%;
     height: 100%;
     width: 100%;
     font-size: 2rem;
+    color: var(--color-secondary);
 }
 .search-container .error h3 {
     font-size: 2.2rem;
-    color: red;
+    color: var(--color-danger);
 }
 
 .search-container .error a {
-    color: red;
+    color: var(--color-danger);
 }
 
 .search-container .container {
@@ -272,7 +338,8 @@ form[name="search"][data-css-hidden]~.search-container {
     width: 8px;
 }
 .search-container .container::-webkit-scrollbar-thumb {
-    background-color: var(--color-hover-l);
+    background-color: var(--color-border);
+    border-radius: 4px;
 }
 
 .search-container :is(.date, .item) [name="remove"] {
@@ -299,6 +366,11 @@ form[name="search"][data-css-hidden]~.search-container {
     padding: var(--padding);
     height: var(--item-height);
     border-radius: var(--border-radius);
+}
+
+.search-container .date .title {
+    font-weight: 500;
+    color: var(--color-primary);
 }
 
 .search-container .item {
@@ -337,7 +409,7 @@ form[name="search"][data-css-hidden]~.search-container {
     position: relative;
     text-align: right;
     min-width: 60px;
-    opacity: 80%;
+    color: var(--color-secondary);
 }
 
 .search-container .item:hover [name="time"] {
@@ -357,7 +429,8 @@ form[name="search"][data-css-hidden]~.search-container {
 }
 
 .page::-webkit-scrollbar-thumb {
-    background-color: var(--color-hover-l);
+    background-color: var(--color-border);
+    border-radius: 4px;
 }
 .page::-webkit-scrollbar {
     width: 8px;
@@ -379,7 +452,7 @@ form[name="search"][data-css-hidden]~.search-container {
     display: block;
     width: 100%;
     height: 1px;
-    background: var(--color-hover-l);
+    background: var(--color-border);
 }
 
 .page[name="more"] form {
@@ -394,8 +467,8 @@ form[name="search"][data-css-hidden]~.search-container {
 }
 
 .page[name="more"] form input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
 }
 
 .page[name="keyboard"] article {
@@ -414,7 +487,8 @@ form[name="search"][data-css-hidden]~.search-container {
 
 .page[name="keyboard"] hr {
     margin: 10px 0;
-    border-color: var(--color);
+    border: none;
+    border-top: 1px solid var(--color-border);
 }
 
 :is(
@@ -426,7 +500,10 @@ form[name="search"][data-css-hidden]~.search-container {
 }
 .page footer {
     padding-top: 20px;
-    border-top: 1px solid var(--color-hover-l);
+    border-top: 1px solid var(--color-border);
+}
+.page footer .version {
+    color: var(--color-secondary);
 }
 .page footer div {
     display: flex;
