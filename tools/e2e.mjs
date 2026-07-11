@@ -183,6 +183,19 @@ check("site: 只剩 github", await ev(`(function(){
 await type("site:github.com claude");
 check("site:+词组合", await gHas("claude-code"));
 
+// ---------- 四期：popup 搜索结果导出（stub downloadText 捕获文本，CDP 拦不住扩展页真实下载）----------
+await ev(`downloadText = function (f, m, t) { window.__dl = {filename: f, mime: m, text: t}; }`);
+check("popup 导出按钮出现", await ev(`document.querySelector('#g_container [data-export]') !== null`));
+await ev(`window.confirm = function () { return true; }`);
+await ev(`window.__dl = null; document.querySelector('#g_container [data-export]').click()`);
+await sleep(300);
+check("popup 导出 CSV 带 BOM", await ev(`window.__dl != null && window.__dl.filename.endsWith(".csv") && window.__dl.text.charCodeAt(0) === 0xFEFF`));
+check("popup CSV 表头中文", await ev(`window.__dl && window.__dl.text.indexOf("标题") !== -1 && window.__dl.text.indexOf("网址") !== -1`));
+await ev(`window.confirm = function () { return false; }`);
+await ev(`window.__dl = null; document.querySelector('#g_container [data-export]').click()`);
+await sleep(300);
+check("popup 导出 JSON 可解析", await ev(`(function(){ try { const a = JSON.parse(window.__dl.text); return window.__dl.filename.endsWith(".json") && Array.isArray(a) && a.length >= 1; } catch (e) { return false; } })()`));
+
 // ---------- 二期：搜索态删除 ----------
 await type("test-delete-me");
 check("删除目标可搜到", await gHas("test-delete-me"));
@@ -299,6 +312,16 @@ check("范围持久化", (await ev(`chrome.storage.local.get().then((s) => s.sta
 // 数据表展开
 await ev(`document.querySelector("#chart_top .chart-table").open = true`);
 check("Top 数据表有行", (await ev(`document.querySelectorAll("#chart_top .chart-table table tr").length`)) >= 2);
+// —— 四期：stats 导出访问明细（stub downloadText 捕获文本）——
+await ev(`downloadText = function (f, m, t) { window.__dl = {filename: f, mime: m, text: t}; }`);
+await ev(`window.__dl = null; document.getElementById("exp_csv").click()`);
+await sleep(300);
+check("stats 导出 CSV 带 BOM", await ev(`window.__dl != null && window.__dl.filename.endsWith(".csv") && window.__dl.text.charCodeAt(0) === 0xFEFF`));
+check("stats CSV 表头时间/网址列", await ev(`window.__dl && window.__dl.text.indexOf("时间") !== -1 && window.__dl.text.indexOf("网址") !== -1`));
+check("stats CSV 有数据行", await ev(`window.__dl && window.__dl.text.split("\\r\\n").filter((l) => l.length > 0).length >= 2`));
+await ev(`window.__dl = null; document.getElementById("exp_json").click()`);
+await sleep(300);
+check("stats 导出 JSON 可解析", await ev(`(function(){ try { const a = JSON.parse(window.__dl.text); return window.__dl.filename.endsWith(".json") && Array.isArray(a); } catch (e) { return false; } })()`));
 // 深色截图（当前 theme=d）
 await screenshot(ASSETS + "phase3-stats-dark.png");
 // 浅色截图
