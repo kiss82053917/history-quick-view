@@ -50,6 +50,7 @@ const STORAGE_OPEN_CURRENT = "c";
 const STORAGE_OPEN_NEW = "n";
 const STORAGE_THEME_DARK = "d";
 const STORAGE_THEME_LIGHT = "l";
+const STORAGE_THEME_AUTO = "a";
 
 
 const storage = {
@@ -659,7 +660,10 @@ function initStorage(items) {
     } else {
         set = true;
     }
-    if (theme === STORAGE_THEME_DARK || theme === STORAGE_THEME_LIGHT) {
+    if (theme === STORAGE_THEME_DARK
+        || theme === STORAGE_THEME_LIGHT
+        || theme === STORAGE_THEME_AUTO
+    ) {
         storage.theme = theme;
     } else {
         set = true;
@@ -1232,6 +1236,7 @@ const HSectionMore = {
             if (
                 target.value === STORAGE_THEME_DARK
                     || target.value === STORAGE_THEME_LIGHT
+                    || target.value === STORAGE_THEME_AUTO
             ) {
                 storage.theme = target.value;
                 storageChange = true;
