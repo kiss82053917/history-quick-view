@@ -1,6 +1,12 @@
 MIT License
 
-Copyright (c) 2023 axarisar
+Copyright (c) 2023 axarisar (Axel Ariel Saravia) — original author
+Copyright (c) 2026 kiss82053917 — fork maintainer
+
+This project ("History Manager+" / "历史管家") is a fork of the original
+"History Quick View" by axarisar (https://github.com/AxelArielSaravia/history-quick-view),
+extended with fuzzy search, site grouping, Chinese date filters, visit
+statistics, and CSV/JSON export.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -1,3 +1,16 @@
+# 历史管家 / History Manager+
+
+> **本项目是 [History Quick View](https://github.com/AxelArielSaravia/history-quick-view)（作者 Axel Ariel Saravia，MIT 协议）的 fork。**
+> 在原版基础上新增：界面汉化 + Chrome 原生 Material 三主题、模糊搜索、`site:` 与按网站分组、中文日期筛选、浏览统计图表（Top 网站 / 24 小时分布 / 每日趋势）、CSV/JSON 导出。原作者版权与 MIT 许可全部保留（见 [LICENSE](./LICENSE)）。
+>
+> This project is a fork of **History Quick View** by Axel Ariel Saravia (MIT-licensed). It adds i18n, a Material theme, fuzzy search, site grouping, Chinese date filters, visit statistics, and CSV/JSON export. The original copyright and MIT license are retained.
+
+维护者 / Fork maintainer: kiss82053917 · 原作者 / Original author: Axel Ariel Saravia
+
+---
+
+<details><summary>原版 README（Original README by Axel Ariel Saravia）</summary>
+
 # ![History Quick View](./media/promotion/marquee.png)
 v0.4.3
 
@@ -106,3 +119,5 @@ The icons used in the extension are from
 [Lucide](https://lucide.dev/).
 
 The inspiration of this extension comes from the [Edge Browser](https://www.microsoft.com/en-us/edge) history extension.
+
+</details>
